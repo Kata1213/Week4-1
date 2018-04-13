@@ -15,9 +15,14 @@ public class Library {
 
     private static final DecimalFormat decimalFormat = new DecimalFormat("###################.##");
 
+    static {
+        course.add("数学");
+        course.add("语文");
+        course.add("英语");
+        course.add("编程");
+    }
 
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
         printMenu("menu");
         while (sc.hasNextLine()) {
@@ -58,37 +63,12 @@ public class Library {
             }
         }
     }
-    //打印目录信息
-    private static void printMenu(String result) {
-        switch (result) {
-            case "menu":
-                System.out.print("1. 添加学生\n" +
-                        "2. 生成成绩单\n" +
-                        "3. 退出\n" +
-                        "请输入你的选择(1~3):\n");
-                break;
-            case "add":
-                System.out.print("请输入学生信息（格式：姓名, 学号, 学科: 成绩, ...），按回车提交：\n");
-                break;
-            case "output":
-                System.out.print("请输入要打印的学生的学号（格式： 学号, 学号,...），按回车提交：\n");
-                break;
-            case "falseAdd":
-                System.out.print("请按正确的格式输入（格式：姓名, 学号, 学科: 成绩, ...），按回车提交：\n");
-                break;
-            case "falseOutput":
-                System.out.print("请按正确的格式输入要打印的学生的学号（格式： 学号, 学号,...），按回车提交：\n");
-                break;
-            default:
-                break;
-        }
-
-    }
 
     public static boolean addStudentInfo(List<String> inputList) {
         if (!judgeStudentInfo(inputList)) {
             return false;
         }
+
         Map<String, Integer> grades = new HashMap<>();
         StudentInfo student = new StudentInfo();
         student.setName(inputList.get(0));
@@ -99,29 +79,10 @@ public class Library {
         });
         student.setGrades(grades);
         report.add(student);
+
         System.out.print("学生" + student.getName() + "的成绩被添加\n");
+
         return true;
-    }
-    private static boolean judgeStudentInfo(List<String> inputList) {
-        if (inputList.size() != 6) {
-            return false;
-        }
-        if (!judgePattern(inputList.get(0), patternName)) return false;
-        if (!judgePattern(inputList.get(1), patternNumber)) return false;
-        boolean flag = true;
-        for (int i = 2; i < inputList.size(); i++) {
-            String[] item = inputList.get(i).split(":");
-            course.add("数学");
-            course.add("语文");
-            course.add("英语");
-            course.add("编程");
-            if (!course.contains(item[0])
-                    || !judgePattern(item[1], patternGrade)) {
-                flag = false;
-                break;
-            }
-        }
-        return flag;
     }
 
     public static boolean generateGrades(List<String> inputList) {
@@ -156,6 +117,50 @@ public class Library {
         System.out.print("全班总分中位数：" + decimalFormat.format(classMid) + "\n");
 
         return true;
+    }
+
+    private static void printMenu(String result) {
+        switch (result) {
+            case "menu":
+                System.out.print("1. 添加学生\n" +
+                        "2. 生成成绩单\n" +
+                        "3. 退出\n" +
+                        "请输入你的选择(1~3):\n");
+                break;
+            case "add":
+                System.out.print("请输入学生信息（格式：姓名, 学号, 学科: 成绩, ...），按回车提交：\n");
+                break;
+            case "output":
+                System.out.print("请输入要打印的学生的学号（格式： 学号, 学号,...），按回车提交：\n");
+                break;
+            case "falseAdd":
+                System.out.print("请按正确的格式输入（格式：姓名, 学号, 学科: 成绩, ...），按回车提交：\n");
+                break;
+            case "falseOutput":
+                System.out.print("请按正确的格式输入要打印的学生的学号（格式： 学号, 学号,...），按回车提交：\n");
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private static boolean judgeStudentInfo(List<String> inputList) {
+        if (inputList.size() != 6) {
+            return false;
+        }
+        if (!judgePattern(inputList.get(0), patternName)) return false;
+        if (!judgePattern(inputList.get(1), patternNumber)) return false;
+        boolean flag = true;
+        for (int i = 2; i < inputList.size(); i++) {
+            String[] item = inputList.get(i).split(":");
+            if (!course.contains(item[0])
+                    || !judgePattern(item[1], patternGrade)) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 
     private static boolean judgePattern(String input, Pattern patternName) {

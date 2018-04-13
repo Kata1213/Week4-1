@@ -29,29 +29,26 @@ public class LibraryTest {
 
     @Test
     public void testAddScore() {
-        String s1 = "张三,0001,数学:60,语文:60,英语:60,编程:60";
+        String s1 = "张三,123,数学:60,语文:60,英语:60,编程:60";
         assertTrue(Library.addStudentInfo(Arrays.asList(s1.split(","))));
         assertTrue(systemOut().endsWith("学生张三的成绩被添加\n"));
 
     }
     @Test
     public void testPtrintScore() {
-        String s1 = "张三,0001,数学:60,语文:60,英语:60,编程:60";
-        String s2 = "李四,0002,数学:90,语文:90,英语:90,编程:90";
+        String s1 = "张三,123,数学:60,语文:60,英语:60,编程:60";
         assertTrue(Library.addStudentInfo(Arrays.asList(s1.split(","))));
-        assertTrue(Library.addStudentInfo(Arrays.asList(s2.split(","))));
-        String s3 = "0001,0002";
-        assertTrue(Library.generateGrades(Arrays.asList(s3.split(","))));
+        assertTrue(systemOut().endsWith("学生张三的成绩被添加\n"));
+        String s2 = "123";
+        assertTrue(Library.generateGrades(Arrays.asList(s2)));
         assertEquals("学生张三的成绩被添加\n" +
-                "学生李四的成绩被添加\n" +
                 "成绩单\n" +
                 "姓名|数学|语文|英语|编程|平均分|总分\n" +
                 "========================\n" +
-                "张三|60|60|60|60|60|300\n" +
-                "李四|90|90|90|90|90|360\n" +
+                "张三|60|60|60|60|60|240\n" +
                 "========================\n" +
-                "全班总分平均数：330\n" +
-                "全班总分中位数：330\n", systemOut());
+                "全班总分平均数：240\n" +
+                "全班总分中位数：240\n", systemOut());
     }
 
     }
